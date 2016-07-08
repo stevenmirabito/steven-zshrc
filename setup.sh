@@ -34,4 +34,5 @@ curl --progress-bar "https://raw.githubusercontent.com/mbillow/right-at-home/mas
 git clone -q https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone -q https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-printf "\nYou should be all set, just restart your terminal emulator.\n"
+source ~/.zshrc
+printf "\nYou should be all set!\n"
