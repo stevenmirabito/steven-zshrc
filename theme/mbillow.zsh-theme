@@ -2,13 +2,13 @@ HOSTNAME=$(hostname -f | tr '[:upper:]' '[:lower:]')
 
 if [ $HOSTNAME = "mbillowmac1" ]; then
     SHELL_COLOR="red"
-elif [ $HOSTNAME = "ada" ]; then
+elif [ $HOSTNAME = "ada.csh.rit.edu" ]; then
     SHELL_COLOR="magenta"
-elif [ $HOSTNAME = "endor" ]; then
+elif [ $HOSTNAME = "endor.csh.rit.edu" ]; then
     SHELL_COLOR="green"
 elif [ $HOSTNAME = "mwb3965" ]; then
     SHELL_COLOR="orange"
-elif [ $HOSTNAME = "san" ]; then
+elif [ $HOSTNAME = "san.csh.rit.edu" ]; then
     SHELL_COLOR="blue"
 else
     SHELL_COLOR="white"
