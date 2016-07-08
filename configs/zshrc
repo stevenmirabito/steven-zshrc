@@ -77,6 +77,7 @@ alias endor="ssh root@endor.csh.rit.edu"
 alias san="ssh san.csh.rit.edu"
 alias heliod="ssh root@helios.csh.rit.edu"
 alias helios="ssh root@helios.csh.rit.edu"
+alias updatehome="sh -c \"$(curl -fsSL http://home.billow.me)\""
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
