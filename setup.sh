@@ -1,3 +1,4 @@
+#!/bin/zsh
 ZSH_LOC=$(which zsh)
 ETC_SHELL=$(grep "$ZSH_LOC" /etc/shells)
 
