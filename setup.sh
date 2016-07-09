@@ -30,7 +30,7 @@ printf "# Path to your oh-my-zsh installation.\nexport ZSH=$HOME/.oh-my-zsh\n" >
 curl --progress-bar "https://raw.githubusercontent.com/mbillow/right-at-home/master/configs/zshrc" >> ~/.zshrc
 
 printf "Grabbing ZSH theme and plugins."
-curl --progress-bar "https://raw.githubusercontent.com/mbillow/right-at-home/master/theme/mbillow.zsh-theme" >> ~/.oh-my-zsh/themes/mbillow.zsh-theme
+curl --progress-bar "https://raw.githubusercontent.com/mbillow/right-at-home/master/theme/mbillow.zsh-theme" > ~/.oh-my-zsh/themes/mbillow.zsh-theme
 git clone -q https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone -q https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
