@@ -2,7 +2,7 @@
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="mbillow"
+ZSH_THEME="agnoster"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -46,7 +46,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git osx zsh-autosuggestions zsh-syntax-highlighting)
 
 # User configuration
 
@@ -59,11 +59,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='vim'
+else
+    export EDITOR='vim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -71,19 +71,17 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-alias csh="ssh shell.csh.rit.edu"
-alias c="clear"
-alias endor="ssh root@endor.csh.rit.edu"
-alias san="ssh san.csh.rit.edu"
-alias heliod="ssh root@helios.csh.rit.edu"
-alias helios="ssh root@helios.csh.rit.edu"
-alias updatehome="sh -c \"\$(curl -fsSL http://home.billow.me)\""
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+alias c="clear"
+alias update-zshrc="sh -c \"\`curl -fsSL http://setup.stevenmirabito.com\`\""
+alias subl="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"
+
+alias csh="ssh smirabito@shell.csh.rit.edu"
+alias san="ssh smirabito@san.csh.rit.edu"
+alias 8dick="ssh root@8dick.csh.rit.edu"
+alias argo="ssh argo.csh.rit.edu"
+alias taurus="ssh root@taurus.stevtek.com"
