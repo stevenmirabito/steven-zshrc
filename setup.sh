@@ -17,14 +17,42 @@ fi
 
 ZSH_HIGHLIGHT_PLUGIN="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
 ZSH_SUGGEST_PLUGIN="${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
+ZSH_NEAT_THEME="${ZSH_CUSTOM}/repos/neat"
 
 # Styles
 RESET="\e[0m"
 BOLD="\e[1m"
-LOGO="${BOLD}\e[92m"
-PRIMARY="${BOLD}\e[91m"
+PRIMARY="${BOLD}\e[94m"
 
-echo -e "${LOGO}"
+# Helper Functions
+install_plugin () {
+    # Expects 3 arguments: $1=<name>, $2=<path>, $3=<clone-url>
+    if [[ -d "$2" ]]; then
+        echo "${PRIMARY}📦  Updating $1...${RESET}"
+        cd $2
+        git fetch --all
+        git reset --hard origin/master
+    else
+        echo "${PRIMARY}📦  Installing $1...${RESET}"
+        git clone -q $3 $2
+    fi
+}
+
+install_theme() {
+    # Extends install_plugin, expects same arguments
+    install_plugin "$1 theme" $2 $3
+    cd $2
+    for i in *.zsh(.N); do
+        rm -f "${ZSH_CUSTOM}/${i}-theme"
+        ln -s "`pwd`/${i}" "${ZSH_CUSTOM}/${i}-theme"
+    done
+    for i in *.zsh-theme(.N); do
+        rm -f "${ZSH_CUSTOM}/${i}"
+        ln -s "`pwd`/${i}" "${ZSH_CUSTOM}/${i}"
+    done
+}
+
+echo -e "${PRIMARY}"
 echo "         __                                       __             "
 echo "   _____/ /____ _   _____  ____       ____  _____/ /_  __________"
 echo "  / ___/ __/ _ \ | / / _ \/ __ \_____/_  / / ___/ __ \/ ___/ ___/"
@@ -55,27 +83,10 @@ echo "# Path to your oh-my-zsh installation.\nexport ZSH=$HOME/.oh-my-zsh\n" > ~
 curl -fL --progress-bar "https://setup.stevenmirabito.com/configs/zshrc" >> ~/.zshrc
 
 echo -e "${PRIMARY}🎨  Grabbing ZSH theme and plugins....${RESET}"
-curl -fL --progress-bar "https://setup.stevenmirabito.com/theme/purity-steven.zsh-theme" > ~/.oh-my-zsh/themes/purity-steven.zsh-theme
 
-if [[ -d "${ZSH_HIGHLIGHT_PLUGIN}" ]]; then
-    echo -e "${PRIMARY}🖌  Updating zsh-syntax-highlighting...${RESET}"
-    cd ${ZSH_HIGHLIGHT_PLUGIN}
-    git fetch --all
-    git reset --hard origin/master
-else
-    echo -e "${PRIMARY}🖌  Installing zsh-syntax-highlighting...${RESET}"
-    git clone -q https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_HIGHLIGHT_PLUGIN}
-fi
-
-if [[ -d "${ZSH_SUGGEST_PLUGIN}" ]]; then
-    echo "${PRIMARY}🔎  Updating zsh-autosuggestions...${RESET}"
-    cd ${ZSH_SUGGEST_PLUGIN}
-    git fetch --all
-    git reset --hard origin/master
-else
-    echo "${PRIMARY}🔎  Installing zsh-autosuggestions...${RESET}"
-    git clone -q https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_SUGGEST_PLUGIN}
-fi
+install_plugin "zsh-syntax-highlighting" ${ZSH_HIGHLIGHT_PLUGIN} "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+install_plugin "zsh-autosuggestions" ${ZSH_SUGGEST_PLUGIN} "https://github.com/zsh-users/zsh-autosuggestions.git"
+install_theme "Neat" ${ZSH_NEAT_THEME} "https://github.com/stevenmirabito/neat.git"
 
 source ~/.zshrc
 printf "${PRIMARY}🏁  Done!${RESET}\n"
