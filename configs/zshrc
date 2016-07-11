@@ -77,7 +77,7 @@ fi
 # For a full list of active aliases, run `alias`.
 
 alias c="clear"
-alias update-zshrc="sh -c \"\`curl -fsSL http://setup.stevenmirabito.com\`\""
+alias update-zshrc="curl -o- -fsSL https://setup.stevenmirabito.com | zsh"
 alias subl="/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl"
 
 alias csh="ssh smirabito@shell.csh.rit.edu"
