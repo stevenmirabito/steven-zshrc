@@ -78,7 +78,7 @@ fi
 
 alias c="clear"
 alias update-zshrc="sh -c \"\`curl -fsSL http://setup.stevenmirabito.com\`\""
-alias subl="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"
+alias subl="/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl"
 
 alias csh="ssh smirabito@shell.csh.rit.edu"
 alias san="ssh smirabito@san.csh.rit.edu"
