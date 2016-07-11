@@ -55,7 +55,7 @@ echo "# Path to your oh-my-zsh installation.\nexport ZSH=$HOME/.oh-my-zsh\n" > ~
 curl -fL --progress-bar "https://setup.stevenmirabito.com/configs/zshrc" >> ~/.zshrc
 
 echo -e "${PRIMARY}🎨  Grabbing ZSH theme and plugins....${RESET}"
-curl -fL --progress-bar "https://setup.stevenmirabito.com/theme/steven.zsh-theme" > ~/.oh-my-zsh/themes/steven.zsh-theme
+curl -fL --progress-bar "https://setup.stevenmirabito.com/theme/purity-steven.zsh-theme" > ~/.oh-my-zsh/themes/purity-steven.zsh-theme
 
 if [[ -d "${ZSH_HIGHLIGHT_PLUGIN}" ]]; then
     echo -e "${PRIMARY}🖌  Updating zsh-syntax-highlighting...${RESET}"
