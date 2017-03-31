@@ -15,8 +15,10 @@ if [ ! -n "$ZSH_CUSTOM" ]; then
     ZSH_CUSTOM="${ZSH}/custom"
 fi
 
+export NVM_LAZY_LOAD=true
 ZSH_HIGHLIGHT_PLUGIN="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
 ZSH_SUGGEST_PLUGIN="${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
+ZSH_NVM_PLUGIN="${ZSH_CUSTOM}/plugins/zsh-nvm"
 ZSH_NEAT_THEME="${ZSH_CUSTOM}/repos/neat"
 
 # Styles
@@ -80,13 +82,23 @@ fi
 
 echo -e "${PRIMARY}📦  Pulling ZSH config and setting ZSH environment...${RESET}"
 echo "# Path to your oh-my-zsh installation.\nexport ZSH=$HOME/.oh-my-zsh\n" > ~/.zshrc
-curl -fL --progress-bar "https://setup.stevenmirabito.com/configs/zshrc" >> ~/.zshrc
+curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/zshrc" >> ~/.zshrc
 
-echo -e "${PRIMARY}🎨  Grabbing ZSH theme and plugins....${RESET}"
-
+echo -e "${PRIMARY}🎨  Grabbing ZSH theme and plugins...${RESET}"
 install_plugin "zsh-syntax-highlighting" ${ZSH_HIGHLIGHT_PLUGIN} "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 install_plugin "zsh-autosuggestions" ${ZSH_SUGGEST_PLUGIN} "https://github.com/zsh-users/zsh-autosuggestions.git"
+install_plugin "zsh-nvm" ${ZSH_NVM_PLUGIN} "https://github.com/lukechilds/zsh-nvm.git"
 install_theme "Neat" ${ZSH_NEAT_THEME} "https://github.com/stevenmirabito/neat.git"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo -e "${PRIMARY}🛠  Installing Brew...${RESET}"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    echo -e "${PRIMARY}🎒  Setting up GnuPG...${RESET}"
+    brew install gnupg gpg-agent pinentry-mac
+    curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/gpg.conf" > ~/.gnupg/gpg.conf
+    curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/gpg-agent.conf" > ~/.gnupg/gpg-agent.conf
+fi
 
 source ~/.zshrc
 printf "${PRIMARY}🏁  Done!${RESET}\n"

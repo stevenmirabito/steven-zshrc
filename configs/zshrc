@@ -46,7 +46,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git osx zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git osx nvm zsh-autosuggestions zsh-syntax-highlighting)
 
 # User configuration
 
@@ -65,6 +65,17 @@ else
     export EDITOR='vim'
 fi
 
+# In order for gpg to find gpg-agent, gpg-agent must be running, and there must be an env
+# variable pointing GPG to the gpg-agent socket. This little script, which must be sourced
+# in your shell's init script (ie, .bash_profile, .zshrc, whatever), will either start
+# gpg-agent or set up the GPG_AGENT_INFO variable if it's already running.
+if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+    source ~/.gnupg/.gpg-agent-info
+    export GPG_AGENT_INFO
+else
+    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+fi
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -77,10 +88,11 @@ fi
 # For a full list of active aliases, run `alias`.
 
 alias c="clear"
-alias update-zshrc="curl -o- -fsSL https://setup.stevenmirabito.com | zsh"
+alias update-zshrc="curl -o- -fsSL https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/setup.sh | zsh"
 
-alias csh="ssh smirabito@shell.csh.rit.edu"
-alias san="ssh smirabito@san.csh.rit.edu"
-alias 8dick="ssh root@8dick.csh.rit.edu"
+alias csh="ssh shell.csh.rit.edu"
+alias cshweb="ssh csh.rit.edu"
+alias 8dick="ssh 8dick.csh.rit.edu"
 alias argo="ssh argo.csh.rit.edu"
-alias taurus="ssh root@taurus.stevtek.com"
+alias taurus="ssh taurus.stevtek.com"
+
