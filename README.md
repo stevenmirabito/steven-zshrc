@@ -6,7 +6,7 @@ Installation
 -------------
 If you trust me, here's a one-line installation:
 
-    curl -o- -fsSL https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/setup.sh | zsh
+    curl -o ~/zshsetup.sh -fsSL https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/setup.sh && zsh ~/zshsetup.sh && rm -f ~/zshsetup.sh
 
 What this script does:
 -----------------------

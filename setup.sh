@@ -95,7 +95,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
     echo -e "${PRIMARY}🎒  Setting up GnuPG...${RESET}"
-    brew install gnupg gpg-agent pinentry-mac
+    brew install gnupg pinentry-mac
     curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/gpg.conf" > ~/.gnupg/gpg.conf
     curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/gpg-agent.conf" > ~/.gnupg/gpg-agent.conf
 fi
