@@ -1,6 +1,6 @@
 steven-zshrc
 =============
-###### A simple setup script to install my person ZSH config
+###### A simple setup script to install my personal ZSH config
 
 Installation
 -------------

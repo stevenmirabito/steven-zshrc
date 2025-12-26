@@ -2,6 +2,7 @@
 # Installer for steven-zshrc
 # Author: Steven Mirabito (steven@stevenmirabito.com)
 # Author: Marc Billow (marc@billow.me)
+set -e
 
 # Paths
 ZSH_LOC=`which zsh`
@@ -15,6 +16,7 @@ if [ ! -n "$ZSH_CUSTOM" ]; then
     ZSH_CUSTOM="${ZSH}/custom"
 fi
 
+export RUNZSH=no
 export NVM_LAZY_LOAD=true
 ZSH_HIGHLIGHT_PLUGIN="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
 ZSH_SUGGEST_PLUGIN="${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
@@ -66,23 +68,22 @@ if [[ "$ETC_SHELL" == "" ]]; then
 	echo -e "${PRIMARY}✅  ZSH has been added to /etc/shells.${RESET}"
 fi
 
-if [[ "$SHELL" != "$ZSH_LOC" ]]
-then
+if [[ "$SHELL" != "$ZSH_LOC" ]]; then
 	chsh -s "$ZSH_LOC" $USER
 	echo -e "${PRIMARY}✅  User \"$USER\"'s shell has been altered.${RESET}"
 fi
 
-if [ -d "$ZSH" ]; then
+if [[ -d "$ZSH" ]]; then
     echo -e "${PRIMARY}🛠  Upgrading Oh My Zsh...${RESET}"
-    sh -c "`curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/upgrade.sh`"
+    /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/upgrade.sh)"
 else
     echo -e "${PRIMARY}📥  Installing Oh My Zsh...${RESET}"
-    sh -c "`curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh`"
+    /bin/sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 echo -e "${PRIMARY}📦  Pulling ZSH config and setting ZSH environment...${RESET}"
 echo "# Path to your oh-my-zsh installation.\nexport ZSH=$HOME/.oh-my-zsh\n" > ~/.zshrc
-curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/zshrc" >> ~/.zshrc
+curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/main/configs/zshrc" > ~/.zshrc
 
 echo -e "${PRIMARY}🎨  Grabbing ZSH theme and plugins...${RESET}"
 install_plugin "zsh-syntax-highlighting" ${ZSH_HIGHLIGHT_PLUGIN} "https://github.com/zsh-users/zsh-syntax-highlighting.git"
@@ -91,13 +92,41 @@ install_plugin "zsh-nvm" ${ZSH_NVM_PLUGIN} "https://github.com/lukechilds/zsh-nv
 install_theme "Neat" ${ZSH_NEAT_THEME} "https://github.com/stevenmirabito/neat.git"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo -e "${PRIMARY}🛠  Installing Brew...${RESET}"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    if [[ ! -f "/opt/homebrew/bin/brew" ]]; then
+        echo -e "${PRIMARY}🛠  Installing Brew...${RESET}"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/steven/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
 
-    echo -e "${PRIMARY}🎒  Setting up GnuPG...${RESET}"
-    brew install gnupg pinentry-mac
-    curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/gpg.conf" > ~/.gnupg/gpg.conf
-    curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/master/configs/gpg-agent.conf" > ~/.gnupg/gpg-agent.conf
+    if [[ ! -f "$(brew --prefix)/bin/eza" ]]; then
+        echo -e "${PRIMARY}📦  Installing packages...${RESET}"
+        brew install eza
+    fi
+
+    if [[ ! -f "$(brew --prefix)/bin/pinentry-mac" ]]; then
+        echo -e "${PRIMARY}🎒  Setting up GnuPG...${RESET}"
+        brew install gpg2 gnupg pinentry-mac
+        mkdir -p ~/.gnupg
+        curl -fL --progress-bar "https://raw.githubusercontent.com/stevenmirabito/steven-zshrc/main/configs/gpg-agent.conf" > ~/.gnupg/gpg-agent.conf
+        chmod -R 600 ~/.gnupg
+        chmod 700 ~/.gnupg
+    fi
+
+    if [[ ! -d "$(brew --prefix)/opt/asdf" ]]; then
+        echo -e "${PRIMARY}🎒  Setting up asdf...${RESET}"
+        brew install asdf readline xz
+        source $(brew --prefix)/opt/asdf/libexec/asdf.sh
+        echo -e "${PRIMARY}🛠  Installing Node.js...${RESET}"
+        $(brew --prefix)/bin/asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+        $(brew --prefix)/bin/asdf install nodejs latest
+        $(brew --prefix)/bin/asdf set -u nodejs latest
+        echo -e "${PRIMARY}🛠  Installing Python...${RESET}"
+        $(brew --prefix)/bin/asdf plugin add python https://github.com/asdf-community/asdf-python.git
+        $(brew --prefix)/bin/asdf install python latest
+        $(brew --prefix)/bin/asdf set -u python latest
+        pip install --upgrade pip pipenv
+    fi
 fi
 
 source ~/.zshrc
